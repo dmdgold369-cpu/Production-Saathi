@@ -84,3 +84,4 @@ Tests exercise independent schedule validity, repeatability, exclusive/shared ca
 See [architecture](docs/ARCHITECTURE.md), [deployment](docs/DEPLOYMENT.md), [MVP scope and limits](docs/SCOPE.md), and the live API schema at `/docs`.
 
 This is an implemented and tested MVP, **not a claim of plant-validated production readiness**. Before real commitments, calibrate the factory data, verify scheduling assumptions with PPC, and complete the deployment acceptance checks. V3.1 adds a [Shop Floor log and whole-order reconciliation](docs/EXECUTION.md). Partial-work rescheduling, sequence-dependent cleaning/changeovers, preemptive operations, multi-site tenancy, and enterprise SSO remain unimplemented. The optional LLM copilot is intentionally absent; explanations are deterministic.
+# Production-Saathi
