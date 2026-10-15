@@ -53,7 +53,7 @@ def test_neon_connection_snippet_is_upgraded_to_verify_full(monkeypatch):
     url = "postgresql://neondb_owner:secret@ep-cool-name-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
     options = Database(url).postgres_options()
     assert options["sslmode"] == "verify-full"
-    assert options["sslrootcert"] == "system"
+    assert options["sslrootcert"].endswith("cacert.pem")
 
 
 @pytest.mark.parametrize(

@@ -167,6 +167,14 @@ class Database:
                     if url.hostname.endswith(".supabase.co") or url.hostname.endswith(".pooler.supabase.com")
                     else "system"
                 )
+            if cert == "system":
+                # psycopg-binary bundles its own OpenSSL, which may not find the host's CA store.
+                try:
+                    import certifi
+
+                    cert = certifi.where()
+                except ImportError:
+                    pass
             if cert != "system":
                 cert_path = Path(cert)
                 if not cert_path.is_absolute():
