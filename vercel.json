@@ -1,28 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "api": {
-      "root": ".",
-      "framework": "fastapi",
-      "functions": {
-        "backend/app.py": {
-          "includeFiles": "backend/certs/supabase-ca.crt"
-        }
-      }
-    },
-    "frontend": {
-      "root": "frontend",
-      "framework": "vite"
+  "functions": {
+    "backend/app.py": {
+      "includeFiles": "{backend/certs/supabase-ca.crt,frontend/dist/**}"
     }
-  },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": { "service": "api" }
-    },
-    {
-      "source": "/(.*)",
-      "destination": { "service": "frontend" }
-    }
-  ]
+  }
 }

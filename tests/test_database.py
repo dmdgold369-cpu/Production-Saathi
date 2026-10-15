@@ -48,6 +48,14 @@ def test_explicit_sqlite_target_overrides_cloud_environment(tmp_path, monkeypatc
     assert cloud.path is None
 
 
+def test_neon_connection_snippet_is_upgraded_to_verify_full(monkeypatch):
+    monkeypatch.delenv("PROMISEFLOW_DB_SSLROOTCERT", raising=False)
+    url = "postgresql://neondb_owner:secret@ep-cool-name-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+    options = Database(url).postgres_options()
+    assert options["sslmode"] == "verify-full"
+    assert options["sslrootcert"] == "system"
+
+
 @pytest.mark.parametrize(
     "url",
     [

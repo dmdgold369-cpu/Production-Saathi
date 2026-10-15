@@ -1076,6 +1076,14 @@ def create_app(db_path=None, *, db_schema=None):
         def index():
             return FileResponse(dist / "index.html")
 
+        @app.get("/{name:path}", include_in_schema=False)
+        def static_file(name: str):
+            # Top-level public files (favicon, logos); unknown API paths stay JSON 404s.
+            target = (dist / name).resolve()
+            if name.startswith("api/") or not target.is_relative_to(dist.resolve()):
+                raise HTTPException(404, "Not Found")
+            return FileResponse(target if target.is_file() else dist / "index.html")
+
     return app
 
 

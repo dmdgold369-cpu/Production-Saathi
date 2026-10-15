@@ -143,9 +143,12 @@ class Database:
                 raise ValueError()
             local = url.hostname in ("localhost", "127.0.0.1", "::1")
             options = parse_qs(url.query)
-            if set(options) - {"sslmode", "sslrootcert", "application_name"}:
+            if set(options) - {"sslmode", "sslrootcert", "application_name", "channel_binding"}:
                 raise ValueError()
             mode = options.get("sslmode", ["disable" if local else "verify-full"])[-1]
+            # Provider snippets (e.g. Neon) use sslmode=require; tighten it to full verification.
+            if not local and mode == "require":
+                mode = "verify-full"
             if not local and mode != "verify-full":
                 raise ValueError()
         except ValueError:
