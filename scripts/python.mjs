@@ -9,3 +9,4 @@ const runtime = existsSync(isolated) ? isolated : process.platform === 'win32' ?
 const child = spawn(runtime, process.argv.slice(2), { cwd: root, stdio: 'inherit', shell: false });
 child.on('error', error => { console.error(error.message); process.exitCode = 1; });
 child.on('exit', code => { process.exitCode = code ?? 1; });
+//..
