@@ -11,6 +11,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Literal
+from urllib.parse import urlsplit
 from fastapi import (
     FastAPI,
     Depends,
@@ -201,7 +202,9 @@ def create_app(db_path=None, *, db_schema=None):
                 ).split(",")
                 if origin.strip()
             ]
-            if origin and origin not in allowed:
+            # The site's own address is always allowed; it cannot be a cross-site request.
+            same_site = origin and urlsplit(origin).netloc == request.headers.get("host")
+            if origin and origin not in allowed and not same_site:
                 return JSONResponse(
                     {"detail": "Origin is not allowed"}, status_code=403
                 )

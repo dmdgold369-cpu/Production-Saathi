@@ -92,6 +92,15 @@ def test_foreign_origin_rejected(client):
     )
 
 
+def test_same_site_origin_allowed_without_configuration(client):
+    response = client.post(
+        "/api/login",
+        json={"username": "manager", "password": "promise-demo"},
+        headers={"Origin": "https://production-saathi.vercel.app", "Host": "production-saathi.vercel.app"},
+    )
+    assert response.status_code == 200
+
+
 def test_import_preview_apply_and_replay_protection(client):
     login(client)
     file = client.get("/api/templates/Orders").content
