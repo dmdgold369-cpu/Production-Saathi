@@ -7,6 +7,7 @@ The PostgreSQL schema is private; browsers never receive database credentials.
 import os
 import re
 import sqlite3
+import sys
 from contextlib import contextmanager
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
@@ -224,6 +225,12 @@ class Database:
                 "Database constraint rejected the operation; refresh and check the supplied records"
             ) from None
         except psycopg.Error as exc:
+            # Server-side log only: driver detail with any URL credentials removed.
+            print(
+                "PostgreSQL error:",
+                re.sub(r"://[^@\s]+@", "://***@", str(exc)),
+                file=sys.stderr,
+            )
             raise DatabaseUnavailable(
                 f"Database operation failed (SQLSTATE {exc.sqlstate or 'connection'}). {connection_failure_hint(exc)}"
             ) from None
